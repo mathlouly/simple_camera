@@ -1,6 +1,6 @@
 # Simple Camera
 
-[![simple camera package](https://img.shields.io/badge/simple__camera-v1.0.0-green)](https://github.com/mathlouly/simple_camera)
+[![simple camera package](https://img.shields.io/badge/simple__camera-v1.0.2-green)](https://github.com/mathlouly/simple_camera)
 
 It is a package for using the camera in a simple and fast way.
 
@@ -21,7 +21,7 @@ It is a package for using the camera in a simple and fast way.
 
 ```yaml
 dependencies:
-  simple_camera: ^1.0.0
+  simple_camera: ^1.0.2
   ...
 ```
 
