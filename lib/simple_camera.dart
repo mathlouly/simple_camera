@@ -168,26 +168,30 @@ class SimpleCamera extends ValueNotifier<SimpleCameraValue> {
   ///
   /// Returns [CameraException] if being used on an unsupported platform
   Future<void> _initializePlatform() async {
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        {
-          _cameraPlatform = AndroidCamera();
-        }
-        break;
+    if (kIsWeb) {
+      _cameraPlatform = CameraPlatform.instance;
+    } else {
+      switch (defaultTargetPlatform) {
+        case TargetPlatform.android:
+          {
+            _cameraPlatform = AndroidCamera();
+          }
+          break;
 
-      case TargetPlatform.iOS:
-        {
-          _cameraPlatform = AVFoundationCamera();
-        }
-        break;
+        case TargetPlatform.iOS:
+          {
+            _cameraPlatform = AVFoundationCamera();
+          }
+          break;
 
-      default:
-        {
-          throw CameraException(
-            "Platform not found or not supported",
-            "See the documentation",
-          );
-        }
+        default:
+          {
+            throw CameraException(
+              "Platform not found or not supported",
+              "See the documentation",
+            );
+          }
+      }
     }
   }
 

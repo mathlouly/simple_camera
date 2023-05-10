@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:camera_platform_interface/camera_platform_interface.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:simple_camera/simple_camera.dart';
@@ -78,44 +79,46 @@ class SimpleCameraPreview extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           simpleCamera.buildPreview(),
-          Positioned(
-            top: 16,
-            right: 16,
-            child: _optionButton(
-              icon: simpleCamera.flashMode == FlashMode.always
-                  ? Icons.flash_on
-                  : Icons.flash_off,
-              onPressed: () {
-                simpleCamera.toggleFlash();
-              },
+          if (!kIsWeb)
+            Positioned(
+              top: 16,
+              right: 16,
+              child: _optionButton(
+                icon: simpleCamera.flashMode == FlashMode.always
+                    ? Icons.flash_on
+                    : Icons.flash_off,
+                onPressed: () {
+                  simpleCamera.toggleFlash();
+                },
+              ),
             ),
-          ),
-          Positioned.fill(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 100,
-                  color: Colors.black.withOpacity(0.3),
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _optionButton(
-                        icon: Icons.photo,
-                        onPressed: onPressedGallery,
-                      ),
-                      _takePictureButton(),
-                      _optionButton(
-                        icon: Icons.cameraswitch,
-                        onPressed: () => simpleCamera.switchCamera(),
-                      ),
-                    ],
+          if (!kIsWeb)
+            Positioned.fill(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 100,
+                    color: Colors.black.withOpacity(0.3),
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _optionButton(
+                          icon: Icons.photo,
+                          onPressed: onPressedGallery,
+                        ),
+                        _takePictureButton(),
+                        _optionButton(
+                          icon: Icons.cameraswitch,
+                          onPressed: () => simpleCamera.switchCamera(),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
         ],
       );
     }
