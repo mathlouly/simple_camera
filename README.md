@@ -4,7 +4,7 @@
 
 It is a package for using the camera in a simple and fast way.
 
-## Notes Version 1.0.4
+## Notes Version 1.0.3
 
 * Fix camera erro when dispose
 * Fix camera preview distortion
@@ -34,7 +34,7 @@ It is a package for using the camera in a simple and fast way.
 
 ```yaml
 dependencies:
-  simple_camera: ^1.0.4
+  simple_camera: ^1.0.3
   ...
 ```
 
