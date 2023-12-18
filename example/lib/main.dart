@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_camera/simple_camera.dart';
 
@@ -38,12 +39,20 @@ class _MyHomePageState extends State<MyHomePage> {
     initSimpleCamera();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    simpleCamera.dispose();
+  }
+
   void initSimpleCamera() async {
     try {
       // Here you initialize the camera and pass some options, such as resolution, image format, etc..
       // If it does not inform any camera description, by default it starts with the front camera
       // To learn more, see the documentation.
-      simpleCamera.initializeCamera();
+      simpleCamera.initializeCamera().then((value) {
+        setState(() {});
+      });
     } catch (e) {
       // Important
       // Here you must give the permissions to access the device camera and or audio
@@ -53,16 +62,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        // Simple camera has a preview to view the camera image,
-        //if you have questions about how it works, see the package example
-        child: SimpleCameraPreview(
-          simpleCamera: simpleCamera,
-          onPressedTakePicture: (xfile) {
-            // ignore: avoid_print
-            print(xfile.name);
-          },
-        ),
+      body: SimpleCameraPreview(
+        simpleCamera: simpleCamera,
+        isFull: true,
+        onPressedGallery: () {},
+        onPressedVideoRecording: (xfile) {
+          if (kDebugMode) {
+            print(xfile?.name);
+          }
+        },
+        onPressedTakePicture: (xfile) {
+          if (kDebugMode) {
+            print(xfile?.name);
+          }
+        },
       ),
     );
   }

@@ -4,6 +4,19 @@
 
 It is a package for using the camera in a simple and fast way.
 
+## Notes Version 1.0.4
+
+* Fix camera erro when dispose
+* Fix camera preview distortion
+* Fix camera switch
+* Fix camera switch
+* Add logger all functions
+* Upgrage SDK version 2 to 3
+* New features camera preview
+  - Video recording
+  - Switch flash
+  - Camera image full or 1:1
+
 ## Features
 
 * Display live camera preview in a widget.
@@ -21,7 +34,7 @@ It is a package for using the camera in a simple and fast way.
 
 ```yaml
 dependencies:
-  simple_camera: ^1.0.2
+  simple_camera: ^1.0.4
   ...
 ```
 
@@ -76,12 +89,20 @@ class _MyHomePageState extends State<MyHomePage> {
     initSimpleCamera();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    simpleCamera.dispose();
+  }
+
   void initSimpleCamera() async {
     try {
       // Here you initialize the camera and pass some options, such as resolution, image format, etc..
       // If it does not inform any camera description, by default it starts with the front camera
       // To learn more, see the documentation.
-      simpleCamera.initializeCamera();
+      simpleCamera.initializeCamera().then((value) {
+        setState(() {});
+      });
     } catch (e) {
       // Important
       // Here you must give the permissions to access the device camera and or audio
@@ -91,39 +112,45 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        // Simple camera has a preview to view the camera image,
-        //if you have questions about how it works, see the package example
-        child: SimpleCameraPreview(
-          simpleCamera: simpleCamera,
-          onPressedTakePicture: (xfile) {
-            // ignore: avoid_print
-            print(xfile.name);
-          },
-        ),
+      body: SimpleCameraPreview(
+        simpleCamera: simpleCamera,
+        isFull: true,
+        onPressedGallery: () {},
+        onPressedVideoRecording: (xfile) {
+          if (kDebugMode) {
+            print(xfile?.name);
+          }
+        },
+        onPressedTakePicture: (xfile) {
+          if (kDebugMode) {
+            print(xfile?.name);
+          }
+        },
       ),
     );
   }
 }
+
 ```
 
 ## References and description
 
 Here are all the references you can use and what each one does
 
-| Name                  | Return                    | Description                                                                 |
-|-----------------------|-------------------------|-------------------------------------------------------------------------------|
+| Name                  | Return                          | Description                                                           |
+|-----------------------|---------------------------------|-----------------------------------------------------------------------|
 | availableCameras      | List<CameraDescription>         | returns all available cameras on the device                           |
 | initializeCamera      | void                            | initialize the camera                                                 |
 | switchCamera          | void                            | switch between back and front camera                                  |
-| toggleFlash           | void                            | toggles between flash on and off                                      |
+| switchFlash           | void                            | switch between flash modes                                             |
 | startVideoStream      | Stream<CameraImageData>         | starts a stream of images from the video                              |
 | stopVideoStream       | void                            | close the video stream                                                |
 | startVideoRecording   | void                            | starts recording a video                                              |
-| stopVideoRecording    | Future<XFile>                   | finishes recording and returns the file                               |
+| stopVideoRecording    | Future<XFile>                   | finishes recording and returns the file                                 |
 | startImageStream      | Stream<CameraImageData>         | returns an image stream                                               |
-| setFlashMode          | void                            | change flash mode                                                     |
+| setFlashMode          | void                            | change flash mode                                                      |
 | setExposureMode       | void                            | change the exposure mode                                              |
 | setFocusMode          | void                            | change focus mode                                                     |
 | buildPreview          | Widget                          | returns a widget for the camera view                                  |
 | dispose               | void                            | discard the camera                                                    |
+|-----------------------|---------------------------------|-----------------------------------------------------------------------|
